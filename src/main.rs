@@ -1,4 +1,5 @@
 use getopts::Options;
+use core::panic;
 use std::env;
 use giphy::v1::gifs::SearchRequest;
 use giphy::v1::sync::*;
@@ -59,7 +60,12 @@ fn main() {
             panic!("No results returned from Giphy!")
         );
     // Copy the result to the clipboard
-    let value = format!("`{}`\n{}", search_string, result.embed_url);
+    let url_str = match &result.images.original.url {
+        Some(s) => s,
+        _ => panic!("Failed to get real gif URL for {}", result.url)
+    };
+    let value = format!("`{}`\n{}", search_string, url_str);
     set_clipboard(formats::Unicode, value).unwrap();
-    println!("Copied {} to the clipboard", result.embed_url);
+
+    println!("Copied {} to the clipboard", url_str);
 }
