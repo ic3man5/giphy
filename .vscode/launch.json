@@ -7,15 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'giphy_search'",
+            "name": "Debug executable 'giphyc'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=giphy_search",
-                    "--package=giphy_search"
+                    "--bin=giphyc",
+                    "--package=giphyc"
                 ],
                 "filter": {
-                    "name": "giphy_search",
+                    "name": "giphyc",
                     "kind": "bin"
                 }
             },
@@ -25,16 +25,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'giphy_search'",
+            "name": "Debug unit tests in executable 'giphyc'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=giphy_search",
-                    "--package=giphy_search"
+                    "--bin=giphyc",
+                    "--package=giphyc"
                 ],
                 "filter": {
-                    "name": "giphy_search",
+                    "name": "giphyc",
                     "kind": "bin"
                 }
             },

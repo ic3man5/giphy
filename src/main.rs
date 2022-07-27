@@ -1,22 +1,18 @@
 use getopts::Options;
 use core::panic;
 use std::env;
-use giphy::v1::gifs::SearchRequest;
-use giphy::v1::sync::*;
-use reqwest;
+//use giphy::v1::gifs::SearchRequest;
+//use giphy::v1::sync::*;
+//use reqwest;
 use clipboard_win::{formats, set_clipboard};
 use rand::thread_rng;
 use rand::seq::SliceRandom;
 
-// Gets a "help" String to print to the console.
-pub fn print_usage_string(program_name: &str, opts: &Options) {
-    const VERSION: &str = env!("CARGO_PKG_VERSION");
-    let brief = format!("Usage: {} FILE [options]", program_name);
-    println!("Version: {}\n{}", VERSION, opts.usage(&brief));
-}
+use giphyc::utility::print_usage_string;
+use giphyc::{Giphy, GiphyURLType, GiphySearchError};
+
 
 fn main() {
-    let api_key = "WPWGNRtoMq37sWokCR2GGIiHIWXQlPRG";
     // Lets parse the arguments
     let args: Vec<String> = env::args().collect();
     let mut opts = Options::new();
@@ -42,6 +38,19 @@ fn main() {
     if matches.free.is_empty() {
         panic!("search argument needed to grab a giphy!");
     }
+
+    let search_text = &matches.free.join(" ");
+    let giphy = Giphy::new("WPWGNRtoMq37sWokCR2GGIiHIWXQlPRG".to_string());
+    let urls = giphy.search_url(
+        &search_text,
+        GiphyURLType::Original,
+        Some(300)).unwrap();
+    for url in &urls {
+        println!("url: {}", url);
+    }
+
+
+    /*
     // Finally lets get to the real stuff
     let search_string = &matches.free[0];
     let client = reqwest::blocking::Client::new();
@@ -59,6 +68,7 @@ fn main() {
         .unwrap_or_else(||
             panic!("No results returned from Giphy!")
         );
+    
     // Copy the result to the clipboard
     let url_str = match &result.images.original.url {
         Some(s) => s,
@@ -68,4 +78,5 @@ fn main() {
     set_clipboard(formats::Unicode, value).unwrap();
 
     println!("Copied {} to the clipboard", url_str);
+    */
 }
