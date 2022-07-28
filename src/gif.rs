@@ -1,11 +1,10 @@
-
 pub mod giphy {
     use giphy::v1::gifs::SearchRequest;
     use giphy::v1::sync::*;
     use reqwest;
 
     pub struct Giphy {
-        api_key : String,
+        api_key: String,
     }
     #[derive(Debug)]
     pub enum GiphyURLType {
@@ -27,9 +26,7 @@ pub mod giphy {
 
     impl Giphy {
         pub fn new(api_key: String) -> Self {
-            Giphy { 
-                api_key
-            }
+            Giphy { api_key }
         }
 
         fn get_api(&self) -> SyncApi {
@@ -38,7 +35,12 @@ pub mod giphy {
             api
         }
 
-        pub fn search_url(&self, search_string: &String, url_type: GiphyURLType, limit: Option<u32>) -> Result<Vec<String>, GiphySearchError> {
+        pub fn search_url(
+            &self,
+            search_string: &String,
+            url_type: GiphyURLType,
+            limit: Option<u32>,
+        ) -> Result<Vec<String>, GiphySearchError> {
             let api = self.get_api();
             // Get the response object from the search_string
             let response = SearchRequest::new(search_string)
@@ -48,7 +50,7 @@ pub mod giphy {
                 Ok(r) => r,
                 Err(e) => {
                     return Err(GiphySearchError::SearchFailure(e.to_string()));
-                },
+                }
             };
             // We can't do anything if didn't get any results
             if response.data.len() <= 0 {
@@ -62,35 +64,25 @@ pub mod giphy {
                     GiphyURLType::Url => gif.url.clone(),
                     GiphyURLType::Bitly => gif.bitly_url.clone(),
                     GiphyURLType::Embed => gif.embed_url.clone(),
-                    GiphyURLType::Original => {
-                        match &gif.images.original.url {
-                            Some(u) => u.clone(),
-                            None => String::new(),
-                        }
+                    GiphyURLType::Original => match &gif.images.original.url {
+                        Some(u) => u.clone(),
+                        None => String::new(),
                     },
-                    GiphyURLType::Downsized => {
-                        match &gif.images.downsized.url {
-                            Some(u) => u.clone(),
-                            None => String::new(),
-                        }
+                    GiphyURLType::Downsized => match &gif.images.downsized.url {
+                        Some(u) => u.clone(),
+                        None => String::new(),
                     },
-                    GiphyURLType::DownsizedLarge => {
-                        match &gif.images.downsized_large.url {
-                            Some(u) => u.clone(),
-                            None => String::new(),
-                        }
+                    GiphyURLType::DownsizedLarge => match &gif.images.downsized_large.url {
+                        Some(u) => u.clone(),
+                        None => String::new(),
                     },
-                    GiphyURLType::DownsizedMedium => {
-                        match &gif.images.downsized_medium.url {
-                            Some(u) => u.clone(),
-                            None => String::new(),
-                        }
+                    GiphyURLType::DownsizedMedium => match &gif.images.downsized_medium.url {
+                        Some(u) => u.clone(),
+                        None => String::new(),
                     },
-                    GiphyURLType::DownsizedSmall => {
-                        match &gif.images.downsized_small.url {
-                            Some(u) => u.clone(),
-                            None => String::new(),
-                        }
+                    GiphyURLType::DownsizedSmall => match &gif.images.downsized_small.url {
+                        Some(u) => u.clone(),
+                        None => String::new(),
                     },
                 };
                 // Push the URL only if its actually there. Invalid URLs will be an Empty String
@@ -111,10 +103,9 @@ mod tests {
     fn test_get_client() {
         let giphy = Giphy::new("WPWGNRtoMq37sWokCR2GGIiHIWXQlPRG".to_string());
         let search_text = String::from("lmao");
-        let urls = giphy.search_url(
-            &search_text,
-            GiphyURLType::Original,
-            Some(300)).unwrap();
+        let urls = giphy
+            .search_url(&search_text, GiphyURLType::Original, Some(300))
+            .unwrap();
         for url in &urls {
             println!("url: {}", url);
         }

@@ -1,16 +1,15 @@
-use getopts::Options;
 use core::panic;
+use getopts::Options;
 use std::env;
 //use giphy::v1::gifs::SearchRequest;
 //use giphy::v1::sync::*;
 //use reqwest;
 use clipboard_win::{formats, set_clipboard};
-use rand::thread_rng;
 use rand::seq::SliceRandom;
+use rand::thread_rng;
 
 use giphyc::utility::print_usage_string;
-use giphyc::{Giphy, GiphyURLType, GiphySearchError};
-
+use giphyc::{Giphy, GiphySearchError, GiphyURLType};
 
 fn main() {
     // Lets parse the arguments
@@ -41,14 +40,12 @@ fn main() {
 
     let search_text = &matches.free.join(" ");
     let giphy = Giphy::new("WPWGNRtoMq37sWokCR2GGIiHIWXQlPRG".to_string());
-    let urls = giphy.search_url(
-        &search_text,
-        GiphyURLType::Original,
-        Some(300)).unwrap();
+    let urls = giphy
+        .search_url(&search_text, GiphyURLType::Original, Some(300))
+        .unwrap();
     for url in &urls {
         println!("url: {}", url);
     }
-
 
     /*
     // Finally lets get to the real stuff
@@ -60,15 +57,15 @@ fn main() {
         .send_to(&api)
         .unwrap_or_else(|e|
             panic!("Search request failed: {:?}", e)
-        
+
         );
-    println!("Found {} results...", response.data.len());        
+    println!("Found {} results...", response.data.len());
     let mut rng = thread_rng();
     let result = response.data.choose(&mut rng)
         .unwrap_or_else(||
             panic!("No results returned from Giphy!")
         );
-    
+
     // Copy the result to the clipboard
     let url_str = match &result.images.original.url {
         Some(s) => s,

@@ -12,8 +12,6 @@ pub fn print_usage_string(program_name: &str, opts: &Options) {
     println!("Version: {}\n{}", version, opts.usage(&brief));
 }
 
- 
-
 #[cfg(test)]
 mod tests {
     use crate::*;
