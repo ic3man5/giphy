@@ -43,37 +43,13 @@ fn main() {
     let urls = giphy
         .search_url(&search_text, GiphyURLType::Original, Some(300))
         .unwrap();
-    for url in &urls {
-        println!("url: {}", url);
-    }
 
-    /*
-    // Finally lets get to the real stuff
-    let search_string = &matches.free[0];
-    let client = reqwest::blocking::Client::new();
-    let api = SyncApi::new(api_key.to_string(), client);
-    let response = SearchRequest::new(search_string)
-        //.with_limit(20)
-        .send_to(&api)
-        .unwrap_or_else(|e|
-            panic!("Search request failed: {:?}", e)
-
-        );
-    println!("Found {} results...", response.data.len());
+    println!("Found {} results...", urls.len());
     let mut rng = thread_rng();
-    let result = response.data.choose(&mut rng)
-        .unwrap_or_else(||
-            panic!("No results returned from Giphy!")
-        );
+    let result = urls.choose(&mut rng).unwrap();
 
-    // Copy the result to the clipboard
-    let url_str = match &result.images.original.url {
-        Some(s) => s,
-        _ => panic!("Failed to get real gif URL for {}", result.url)
-    };
-    let value = format!("`{}`\n{}", search_string, url_str);
+    let value = format!("`{}`\n{}", search_text, result);
     set_clipboard(formats::Unicode, value).unwrap();
 
-    println!("Copied {} to the clipboard", url_str);
-    */
+    println!("Copied {} to the clipboard", result);
 }

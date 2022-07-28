@@ -19,7 +19,7 @@
                     "kind": "bin"
                 }
             },
-            "args": ["nope",],
+            "args": ["hello world test",],
             "cwd": "${workspaceFolder}"
         },
         {
